@@ -46,6 +46,9 @@
 #include "net/url_request/url_request_redirect_job.h"
 #include "net/url_request/url_request_throttler_header_adapter.h"
 #include "net/url_request/url_request_throttler_manager.h"
+// BEGIN Motorola, nayankk, 11/20/2013, IKXREL1KK-1222
+#include "ui/base/l10n/l10n_util_android.h"
+// END Motorola, IKXREL1KK-1222
 
 static const char kAvailDictionaryHeader[] = "Avail-Dictionary";
 
@@ -588,13 +591,20 @@ void URLRequestHttpJob::AddExtraHeaders() {
   if (http_user_agent_settings_) {
     // Only add default Accept-Language if the request didn't have it
     // specified.
-    std::string accept_language =
-        http_user_agent_settings_->GetAcceptLanguage();
-    if (!accept_language.empty()) {
+    // BEGIN Motorola, nayankk, 11/20/2013, IKXREL1KK-1222
+    std::string langs = l10n_util::GetDefaultLocale();
+    // If we're not en-US, add in en-US which will be
+    // used with a lower q-value.
+    if (StringToLowerASCII(langs) != "en-us") {
+      langs += ",en-US";
+    }
+
+    if (!langs.empty()) {
       request_info_.extra_headers.SetHeaderIfMissing(
           HttpRequestHeaders::kAcceptLanguage,
-          accept_language);
+          net::HttpUtil::GenerateAcceptLanguageHeader(langs));
     }
+    // END Motorola, nayankk, 11/20/2013, IKXREL1KK-1222
   }
 }
 
