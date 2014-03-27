@@ -2981,11 +2981,6 @@ import java.util.Map;
         return mContentViewClient.getContentVideoViewClient();
     }
 
-    @CalledByNative
-    private boolean shouldBlockMediaRequest(String url) {
-        return mContentViewClient.shouldBlockMediaRequest(url);
-    }
-
     private native void nativeOnJavaContentViewCoreDestroyed(int nativeContentViewCoreImpl);
 
     private native void nativeLoadUrl(
