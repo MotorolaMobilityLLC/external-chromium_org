@@ -60,7 +60,7 @@ void JavaBridgeDispatcher::DidClearWindowObject(WebKit::WebFrame* web_frame) {
     // De-associate from the existing V8 wrapper, so we don't pull any
     // of the wrapper's custom properties into the context of the page we
     // have navigated to.
-    blink::WebBindings::dropV8WrapperForObject(object);
+    WebKit::WebBindings::dropV8WrapperForObject(object);
     // This refs the NPObject. This reference is dropped when either the window
     // object is later cleared, or the object is GC'ed. So the object may be
     // deleted at any time after OnRemoveNamedObject() is called.
